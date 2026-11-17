@@ -1,15 +1,146 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Нахер мне это</title>
-  </head>
-  <body style="background-color: #000000; color: #ffffff; text-align: center; font-family: sans-serif; margin: 0; padding: 20px;">
-    <div>
-      <h1>НАХЕР МНЕ ЭТО</h1>
-      <p>Просто время на ветер</p>
-      <img src="zachem.png" alt="Описание картинки" style="width: 600px; max-width: 100%; height: auto;">
-    </div>
-  </body>
+    <title>Мой сайт со Змейкой</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding-top: 30px;
+        }
+        canvas {
+            border: 3px solid #4caf50;
+            background: #000;
+            display: block;
+            margin: 15px auto;
+            image-rendering: pixelated;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Змейка</h1>
+    <p>Счёт: <span id="score">0</span> | Управление: стрелки на клавиатуре</p>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <button onclick="resetGame()">Начать заново</button>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreEl = document.getElementById("score");
+        const box = 20;
+
+        let snake, food, d, score, game;
+
+        function init() {
+            snake = [{ x: 9 * box, y: 10 * box }];
+            food = spawnFood();
+            d = null;
+            score = 0;
+            scoreEl.textContent = score;
+            if (game) clearInterval(game);
+            game = setInterval(draw, 110);
+        }
+
+        function spawnFood() {
+            return {
+                x: Math.floor(Math.random() * (canvas.width / box)) * box,
+                y: Math.floor(Math.random() * (canvas.height / box)) * box
+            };
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(event.key)) {
+                event.preventDefault();
+            }
+            if (event.key === "ArrowLeft" && d !== "RIGHT") d = "LEFT";
+            else if (event.key === "ArrowUp" && d !== "DOWN") d = "UP";
+            else if (event.key === "ArrowRight" && d !== "LEFT") d = "RIGHT";
+            else if (event.key === "ArrowDown" && d !== "UP") d = "DOWN";
+        });
+
+        function draw() {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Яблоко
+            ctx.fillStyle = "#ff3b30";
+            ctx.fillRect(food.x, food.y, box - 1, box - 1);
+
+            // Змейка
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = i === 0 ? "#4caf50" : "#8bc34a";
+                ctx.fillRect(snake[i].x, snake[i].y, box - 1, box - 1);
+            }
+
+            if (!d) return;
+
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
+
+            if (d === "LEFT") snakeX -= box;
+            if (d === "UP") snakeY -= box;
+            if (d === "RIGHT") snakeX += box;
+            if (d === "DOWN") snakeY += box;
+
+            if (snakeX === food.x && snakeY === food.y) {
+                score++;
+                scoreEl.textContent = score;
+                food = spawnFood();
+            } else {
+                snake.pop();
+            }
+
+            const newHead = { x: snakeX, y: snakeY };
+
+            if (
+                snakeX < 0 ||
+                snakeX >= canvas.width ||
+                snakeY < 0 ||
+                snakeY >= canvas.height ||
+                collision(newHead, snake)
+            ) {
+                clearInterval(game);
+                ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#fff";
+                ctx.font = "28px 'Courier New', monospace";
+                ctx.textAlign = "center";
+                ctx.fillText("Игра окончена!", canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            snake.unshift(newHead);
+        }
+
+        function collision(head, array) {
+            for (let i = 0; i < array.length; i++) {
+                if (head.x === array[i].x && head.y === array[i].y) return true;
+            }
+            return false;
+        }
+
+        function resetGame() {
+            init();
+        }
+
+        init();
+    </script>
+</body>
 </html>
