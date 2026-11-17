@@ -1,5 +1,5 @@
 <html>
-  <body style="background-color: black; color: white;">
+  <body style="background-color: #000000; color: #ffffff;">
     <div style="text-align: center; font-family: sans-serif;">
       <h1>НАХУЯ МНЕ ЭТО</h1>
       <p>похуй проебали</p>
