@@ -69,10 +69,10 @@
             if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(event.key)) {
                 event.preventDefault();
             }
-            if (event.key === "ArrowLeft" && d !== "RIGHT") d = "LEFT";
-            else if (event.key === "ArrowUp" && d !== "DOWN") d = "UP";
-            else if (event.key === "ArrowRight" && d !== "LEFT") d = "RIGHT";
-            else if (event.key === "ArrowDown" && d !== "UP") d = "DOWN";
+            if (event.key === "a" && d !== "RIGHT") d = "LEFT";
+            else if (event.key === "w" && d !== "DOWN") d = "UP";
+            else if (event.key === "d" && d !== "LEFT") d = "RIGHT";
+            else if (event.key === "s" && d !== "UP") d = "DOWN";
         });
 
         function draw() {
