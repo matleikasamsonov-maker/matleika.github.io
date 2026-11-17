@@ -1,23 +1,9 @@
-\<!DOCTYPE html>
 <html>
-<head>
-<style>
-body {
-background-color: black;
-color: white;
-font-family: Arial, sans-serif;
-text-align: center;
-}
-img {
-max-width: 100%;
-height: auto;
-}
-</style>
-</head>
-<body>
-<h1>НАХЕР МНЕ ЭТО</h1>
-<p>Просто време на ветер</p>
-<img src="zachem.png" alt="Описание картинки">
-</body>
+  <body style="background-color: black; color: white;">
+    <div style="text-align: center; font-family: sans-serif;">
+      <h1>НАХУЯ МНЕ ЭТО</h1>
+      <p>похуй проебали</p>
+      <img src="zachem.png" alt="Описание картинки" width="300">
+    </div>
+  </body>
 </html>
-
